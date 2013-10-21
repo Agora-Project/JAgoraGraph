@@ -7,10 +7,14 @@ import java.sql.SQLException;
 
 
 public class Edge {
-	private Node origin;
-	private Node target;
+  protected Node origin;
+  protected Node target;
 
 	protected EdgeID id;
+	
+	// TODO: need o get this from DB.
+	protected String posterName;
+	protected int posterID;
 
 	public Edge(Node origin, Node target) {
 		this.origin = origin;

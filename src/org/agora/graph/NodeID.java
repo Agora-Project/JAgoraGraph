@@ -5,14 +5,14 @@ import java.sql.SQLException;
 
 
 
-public class ID {
+public class NodeID {
 	protected String source;
 	protected Integer digit;
 	
-	public ID() {
+	public NodeID() {
 		
 	}
-	public ID(ResultSet rs) throws SQLException {
+	public NodeID(ResultSet rs) throws SQLException {
 		setSource(rs.getString("source_ID"));
 		setNumber(rs.getInt("arg_ID"));
 	}

@@ -11,7 +11,7 @@ import java.util.Map;
 
 public abstract class Graph {
 
-	public Map<ID, Node> nodeMap;
+	public Map<NodeID, Node> nodeMap;
 	public Map<EdgeID, Edge> edgeMap;
 
 	protected Node[] nodes;
@@ -24,7 +24,7 @@ public abstract class Graph {
 	public void loadNodesFromResultSet(ResultSet rs) throws SQLException {
 		List<Node> tmpNodes = new LinkedList<Node>();
 		
-		nodeMap = new HashMap<ID, Node>();
+		nodeMap = new HashMap<NodeID, Node>();
 
 		while (rs.next()) {
 			Node a = new Node(rs);
@@ -45,10 +45,10 @@ public abstract class Graph {
 	 */
 	public void loadEdgesFromResultSet(ResultSet rs) throws SQLException  {
 		while(rs.next()) {
-			ID originID = new ID();
+			NodeID originID = new NodeID();
 				originID.setSource(rs.getString("source_ID_attacker"));
 				originID.setNumber(rs.getInt("arg_ID_attacker"));
-			ID targetID = new ID();
+			NodeID targetID = new NodeID();
 				targetID.setSource(rs.getString("source_ID_attacker"));
 				targetID.setNumber(rs.getInt("arg_ID_attacker"));
 			Edge edge = new Edge(nodeMap.get(originID), nodeMap.get(targetID));
@@ -56,9 +56,14 @@ public abstract class Graph {
 		}
 	}
 
+	/**
+	 * Adds edge to the Graph and to the respective nodes.
+	 * @param edge
+	 */
 	public void addEdge(Edge edge) {
 		edgeMap.put(edge.getID(), edge);
-		edge.getOrigin().addEdge(edge);
+		edge.getOrigin().addOutgoingEdge(edge);
+		edge.getTarget().addIncomingEdge(edge);
 	}
 
 	public Node[] getNodes() { return nodes; }
