@@ -7,26 +7,27 @@ import java.sql.SQLException;
 
 public class NodeID {
 	protected String source;
-	protected Integer digit;
+	protected Integer localID;
 	
-	public NodeID() {
-		
+	public NodeID(String source, Integer localID) {
+	  this.source = source;
+	  this.localID = localID;
 	}
 	public NodeID(ResultSet rs) throws SQLException {
 		setSource(rs.getString("source_ID"));
-		setNumber(rs.getInt("arg_ID"));
+		setLocalID(rs.getInt("arg_ID"));
 	}
-	protected String getSource() {
+	public String getSource() {
 		return source;
 	}
-	protected void setSource(String source) {
+	public void setSource(String source) {
 		this.source = source;
 	}
-	protected Integer getNumber() {
-		return digit;
+	public Integer getLocalID() {
+		return localID;
 	}
-	protected void setNumber(int digit) {
-		this.digit = digit;
+	public void setLocalID(int digit) {
+		this.localID = digit;
 	}
 	
 }

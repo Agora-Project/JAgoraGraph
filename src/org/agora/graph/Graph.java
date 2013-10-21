@@ -45,12 +45,12 @@ public abstract class Graph {
 	 */
 	public void loadEdgesFromResultSet(ResultSet rs) throws SQLException  {
 		while(rs.next()) {
-			NodeID originID = new NodeID();
-				originID.setSource(rs.getString("source_ID_attacker"));
-				originID.setNumber(rs.getInt("arg_ID_attacker"));
-			NodeID targetID = new NodeID();
-				targetID.setSource(rs.getString("source_ID_attacker"));
-				targetID.setNumber(rs.getInt("arg_ID_attacker"));
+			NodeID originID = new NodeID(
+			    rs.getString("source_ID_attacker"),
+			    rs.getInt("arg_ID_attacker"));
+			NodeID targetID = new NodeID(
+			    rs.getString("source_ID_attacker"),
+			    rs.getInt("arg_ID_attacker"));
 			Edge edge = new Edge(nodeMap.get(originID), nodeMap.get(targetID));
 			addEdge(edge);
 		}

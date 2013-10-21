@@ -3,6 +3,7 @@ package org.agora.graph;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -28,14 +29,15 @@ public class Node {
     outgoingEdges = new LinkedList<Edge>();
 	}
 	
-	protected Node(String source, Integer ID) {
-	  this();
-		id = new NodeID();
-		id.setSource(source);
-		id.setNumber(ID);
+	public Node(NodeID nodeID) {
+	  id = nodeID;
 	}
 	
-	protected Node(ResultSet rs) throws SQLException {
+	public Node(String source, Integer ID) {
+	  this(new NodeID(source, ID));
+	}
+	
+	public Node(ResultSet rs) throws SQLException {
 	  this(rs.getString("source_ID"), rs.getInt("arg_ID"));
 	  posterName = rs.getString("username");
 	  posterID = rs.getInt("user_ID");
@@ -48,15 +50,15 @@ public class Node {
 	 * Adds an edge to the node
 	 * @param att
 	 */
-	protected void addIncomingEdge(Edge arg) {
+	public void addIncomingEdge(Edge arg) {
 	  incomingEdges.add(arg);
 	}
 	
-	protected void addOutgoingEdge(Edge arg) {
+	public void addOutgoingEdge(Edge arg) {
     outgoingEdges.add(arg);
   }
 	
-	public int getNumber() { return id.getNumber(); }
+	public int getNumber() { return id.getLocalID(); }
 	public String getSource() { return id.getSource(); }
 
 
@@ -64,7 +66,21 @@ public class Node {
 	public Iterator<Edge> getOutgoingEdges() { return outgoingEdges.iterator(); }
 	
 	
-	@Override
+	public NodeID getID() { return id; }
+  public String getPosterName() { return posterName; }
+  public int getPosterID() { return posterID; }
+  public Date getDate() { return date; }
+  public double getAcceptability() { return acceptability; }
+  public int getThreadID() { return threadID; }
+  
+  public void setID(NodeID id) { this.id = id; }
+  public void setPosterName(String posterName) { this.posterName = posterName; }
+  public void setPosterID(int id) { this.posterID = id ; }
+  public void setDate(Date date) { this.date = date; }
+  public void setAcceptability(double a) { this.acceptability = a; }
+  public void setThreadID(int id) { this.threadID = id ; }
+
+  @Override
 	public int hashCode() {
 		return id.hashCode();
 	}
