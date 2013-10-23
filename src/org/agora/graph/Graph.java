@@ -9,12 +9,17 @@ import java.util.Map;
 
 
 
-public abstract class Graph {
+public class Graph {
 
 	public Map<NodeID, Node> nodeMap;
 	public Map<EdgeID, Edge> edgeMap;
 
 	protected Node[] nodes;
+
+  public Graph() {
+    nodeMap = new HashMap<NodeID, Node>();
+    edgeMap = new HashMap<EdgeID, Edge>();
+  }
 
 	/**
 	 * This takes in a ResultSet and makes the following assumptions: 1) first
@@ -56,6 +61,8 @@ public abstract class Graph {
 		}
 	}
 
+  public void addNode(Node node) { nodeMap.put(node.getID(), node); }
+
 	/**
 	 * Adds edge to the Graph and to the respective nodes.
 	 * @param edge
@@ -66,6 +73,9 @@ public abstract class Graph {
 		edge.getTarget().addIncomingEdge(edge);
 	}
 
+
+  public boolean isInGraph(NodeID id) { return nodeMap.containsKey(id); }
+	public Node getNodeByID(NodeID id) { return nodeMap.get(id); }
 	public Node[] getNodes() { return nodes; }
 
 }
