@@ -1,13 +1,13 @@
 package org.agora.graph;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.bson.BSONObject;
 
 public class Node {
 	protected NodeID id;
@@ -18,6 +18,8 @@ public class Node {
 	protected Date date;
 	
 	protected double acceptability;
+	
+	protected BSONObject content;
 	
 	protected int threadID;
 
@@ -72,6 +74,7 @@ public class Node {
   public Date getDate() { return date; }
   public double getAcceptability() { return acceptability; }
   public int getThreadID() { return threadID; }
+  public BSONObject getContent() { return content; }
   
   public void setID(NodeID id) { this.id = id; }
   public void setPosterName(String posterName) { this.posterName = posterName; }
@@ -79,6 +82,7 @@ public class Node {
   public void setDate(Date date) { this.date = date; }
   public void setAcceptability(double a) { this.acceptability = a; }
   public void setThreadID(int id) { this.threadID = id ; }
+  public void getContent(BSONObject content) { this.content = content; }
 
   @Override
 	public int hashCode() {
