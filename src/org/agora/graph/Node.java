@@ -1,51 +1,59 @@
 package org.agora.graph;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.agora.graph.properties.PostInfo;
 import org.bson.BSONObject;
+import org.bson.BasicBSONObject;
+import org.bson.types.BasicBSONList;
 
-public class Node {
-	protected NodeID id;
+public class Node implements BSONable, ID {
+	public static String JSONTag = "node";
 	
-	protected String posterName;
-	protected int posterID;
-	
-	protected Date date;
-	
-	protected double acceptability;
-	
-	protected BSONObject content;
-	
-	protected int threadID;
-
+	private PostInfo post;
 	protected List<Edge> incomingEdges;
 	protected List<Edge> outgoingEdges;
+	
+	private Integer ID;
+	private String source;
+	protected double acceptability;
+	protected int threadID;
+
 
 	protected Node() {
-	  incomingEdges = new LinkedList<Edge>();
-    outgoingEdges = new LinkedList<Edge>();
+		incomingEdges = new LinkedList<Edge>();
+		outgoingEdges = new LinkedList<Edge>();
 	}
-	
-	public Node(NodeID nodeID) {
-	  id = nodeID;
-	}
-	
+
 	public Node(String source, Integer ID) {
-	  this(new NodeID(source, ID));
+		this.ID = ID;
+		this.source = source;
 	}
-	
-	public Node(ResultSet rs) throws SQLException {
-	  this(rs.getString("source_ID"), rs.getInt("arg_ID"));
-	  posterName = rs.getString("username");
-	  posterID = rs.getInt("user_ID");
-	  date = rs.getDate("date");
-	  acceptability = rs.getDouble("acceptability");
-	  threadID = rs.getInt("thread_ID");
+
+	public Node(BSONObject bsonObject) {
+		BasicBSONObject bson = (BasicBSONObject) bsonObject;
+		setID(bson.getInt(JSON_ID));
+		setSource(bson.getString(JSON_SOURCE));
+		setAcceptability(bson.getDouble("acceptability"));
+		setThreadID(bson.getInt("thread_ID"));
+		
+		post = new PostInfo((BSONObject) bsonObject.get(PostInfo.JSONTag));
+		
+		// Add incoming and outgoing edges to a list
+		BasicBSONList incoming = (BasicBSONList) bson.get("incoming");
+		BasicBSONList outgoing = (BasicBSONList) bson.get("outgoing");
+		for (Iterator<Object> i = incoming.iterator(); i.hasNext();) {
+			Edge e = new Edge((BSONObject) i.next());
+			incomingEdges.add(e.getID(), e);
+		}
+		for (Iterator<Object> i = outgoing.iterator(); i.hasNext();) {
+			Edge e = new Edge((BSONObject) i.next());
+			outgoingEdges.add(e.getID(), e);
+		}
+		
 	}
 
 	/**
@@ -53,45 +61,73 @@ public class Node {
 	 * @param att
 	 */
 	public void addIncomingEdge(Edge arg) {
-	  incomingEdges.add(arg);
+		incomingEdges.add(arg);
 	}
-	
+
 	public void addOutgoingEdge(Edge arg) {
-    outgoingEdges.add(arg);
-  }
-	
-	public int getNumber() { return id.getLocalID(); }
-	public String getSource() { return id.getSource(); }
+		outgoingEdges.add(arg);
+	}
+	public String getSource() { return source; }
 
 
 	public Iterator<Edge> getIncomingEdges() { return incomingEdges.iterator(); }
 	public Iterator<Edge> getOutgoingEdges() { return outgoingEdges.iterator(); }
-	
-	
-	public NodeID getID() { return id; }
-  public String getPosterName() { return posterName; }
-  public int getPosterID() { return posterID; }
-  public Date getDate() { return date; }
-  public double getAcceptability() { return acceptability; }
-  public int getThreadID() { return threadID; }
-  public BSONObject getContent() { return content; }
-  
-  public void setID(NodeID id) { this.id = id; }
-  public void setPosterName(String posterName) { this.posterName = posterName; }
-  public void setPosterID(int id) { this.posterID = id ; }
-  public void setDate(Date date) { this.date = date; }
-  public void setAcceptability(double a) { this.acceptability = a; }
-  public void setThreadID(int id) { this.threadID = id ; }
-  public void getContent(BSONObject content) { this.content = content; }
 
-  @Override
+
+	public Integer getID() { return ID; }
+	public double getAcceptability() { return acceptability; }
+	public int getThreadID() { return threadID; }
+
+	public void setID(Integer id) { this.ID = id; }
+	public void setAcceptability(double a) { this.acceptability = a; }
+	public void setThreadID(int id) { this.threadID = id ; }
+
+	@Override
 	public int hashCode() {
-		return id.hashCode();
+		return ID.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return id.equals(obj);
+		return ID.equals(obj);
 	}
+
+	@Override
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	@Override
+	public void setID(int digit) {
+		this.ID = digit;
+	}
+
+	@Override
+	public BSONObject getBSON() {
+		BasicBSONObject bson = new BasicBSONObject();
+		bson.put(JSON_ID, ID);
+		bson.put(JSON_SOURCE, source);
+		bson.put("acceptability", acceptability);
+		bson.put(PostInfo.JSONTag, post.getBSON());
+		
+		// Edges
+		BasicBSONList incomingList = new BasicBSONList();
+		BasicBSONList outgoingList = new BasicBSONList();
+		incomingList.addAll(incomingEdges);
+		outgoingList.addAll(outgoingEdges);
+		bson.put("incoming", incomingList);
+		bson.put("outgoing", outgoingList);
+		return bson;
+	}
+
+	public PostInfo getPost() {
+		return post;
+	}
+
+	public void setPost(PostInfo post) {
+		this.post = post;
+	}
+
+
 
 }
