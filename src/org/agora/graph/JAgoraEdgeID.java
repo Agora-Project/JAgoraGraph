@@ -3,12 +3,12 @@ package org.agora.graph;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class EdgeID {
+public class JAgoraEdgeID {
 	private String source;
-	public EdgeID() {
+	public JAgoraEdgeID() {
 		
 	}
-	public EdgeID(ResultSet rs) throws SQLException {
+	public JAgoraEdgeID(ResultSet rs) throws SQLException {
 		setSource(rs.getString("source_ID_attacker") + "+" + rs.getString("source_ID_defender"));
 	}
 

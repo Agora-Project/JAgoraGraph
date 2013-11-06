@@ -9,8 +9,8 @@ import java.util.List;
 
 import org.bson.BSONObject;
 
-public class Node {
-	protected NodeID id;
+public class JAgoraNode {
+	protected JAgoraNodeID id;
 	
 	protected String posterName;
 	protected int posterID;
@@ -23,23 +23,27 @@ public class Node {
 	
 	protected int threadID;
 
-	protected List<Edge> incomingEdges;
-	protected List<Edge> outgoingEdges;
+	protected List<JAgoraEdge> incomingEdges;
+	protected List<JAgoraEdge> outgoingEdges;
 
-	protected Node() {
-	  incomingEdges = new LinkedList<Edge>();
-    outgoingEdges = new LinkedList<Edge>();
+	public JAgoraNode() {
+	  incomingEdges = new LinkedList<JAgoraEdge>();
+    outgoingEdges = new LinkedList<JAgoraEdge>();
 	}
 	
-	public Node(NodeID nodeID) {
-	  id = nodeID;
+	public void construct(JAgoraNodeID nodeID) {
+	  this.id = nodeID;
 	}
 	
-	public Node(String source, Integer ID) {
-	  this(new NodeID(source, ID));
+	public JAgoraNode(JAgoraNodeID nodeID) {
+	  construct(nodeID);
 	}
 	
-	public Node(ResultSet rs) throws SQLException {
+	public JAgoraNode(String source, Integer ID) {
+	  construct(new JAgoraNodeID(source, ID));
+	}
+	
+	public JAgoraNode(ResultSet rs) throws SQLException {
 	  this(rs.getString("source_ID"), rs.getInt("arg_ID"));
 	  posterName = rs.getString("username");
 	  posterID = rs.getInt("user_ID");
@@ -52,11 +56,11 @@ public class Node {
 	 * Adds an edge to the node
 	 * @param att
 	 */
-	public void addIncomingEdge(Edge arg) {
+	public void addIncomingEdge(JAgoraEdge arg) {
 	  incomingEdges.add(arg);
 	}
 	
-	public void addOutgoingEdge(Edge arg) {
+	public void addOutgoingEdge(JAgoraEdge arg) {
     outgoingEdges.add(arg);
   }
 	
@@ -64,11 +68,11 @@ public class Node {
 	public String getSource() { return id.getSource(); }
 
 
-	public Iterator<Edge> getIncomingEdges() { return incomingEdges.iterator(); }
-	public Iterator<Edge> getOutgoingEdges() { return outgoingEdges.iterator(); }
+	public Iterator<JAgoraEdge> getIncomingEdges() { return incomingEdges.iterator(); }
+	public Iterator<JAgoraEdge> getOutgoingEdges() { return outgoingEdges.iterator(); }
 	
 	
-	public NodeID getID() { return id; }
+	public JAgoraNodeID getID() { return id; }
   public String getPosterName() { return posterName; }
   public int getPosterID() { return posterID; }
   public Date getDate() { return date; }
@@ -76,7 +80,7 @@ public class Node {
   public int getThreadID() { return threadID; }
   public BSONObject getContent() { return content; }
   
-  public void setID(NodeID id) { this.id = id; }
+  public void setID(JAgoraNodeID id) { this.id = id; }
   public void setPosterName(String posterName) { this.posterName = posterName; }
   public void setPosterID(int id) { this.posterID = id ; }
   public void setDate(Date date) { this.date = date; }
