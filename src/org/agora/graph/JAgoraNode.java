@@ -1,7 +1,6 @@
 package org.agora.graph;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,7 +16,7 @@ public class JAgoraNode {
 	
 	protected Date date;
 	
-	protected double acceptability;
+	protected BigDecimal acceptability;
 	
 	protected BSONObject content;
 	
@@ -25,6 +24,8 @@ public class JAgoraNode {
 
 	protected List<JAgoraEdge> incomingEdges;
 	protected List<JAgoraEdge> outgoingEdges;
+	
+	protected VoteInformation votes; 
 
 	public JAgoraNode() {
 	  incomingEdges = new LinkedList<JAgoraEdge>();
@@ -41,15 +42,6 @@ public class JAgoraNode {
 	
 	public JAgoraNode(String source, Integer ID) {
 	  construct(new JAgoraNodeID(source, ID));
-	}
-	
-	public JAgoraNode(ResultSet rs) throws SQLException {
-	  this(rs.getString("source_ID"), rs.getInt("arg_ID"));
-	  posterName = rs.getString("username");
-	  posterID = rs.getInt("user_ID");
-	  date = rs.getDate("date");
-	  acceptability = rs.getDouble("acceptability");
-	  threadID = rs.getInt("thread_ID");
 	}
 
 	/**
@@ -76,7 +68,7 @@ public class JAgoraNode {
   public String getPosterName() { return posterName; }
   public int getPosterID() { return posterID; }
   public Date getDate() { return date; }
-  public double getAcceptability() { return acceptability; }
+  public BigDecimal getAcceptability() { return acceptability; }
   public int getThreadID() { return threadID; }
   public BSONObject getContent() { return content; }
   
@@ -84,9 +76,9 @@ public class JAgoraNode {
   public void setPosterName(String posterName) { this.posterName = posterName; }
   public void setPosterID(int id) { this.posterID = id ; }
   public void setDate(Date date) { this.date = date; }
-  public void setAcceptability(double a) { this.acceptability = a; }
+  public void setAcceptability(BigDecimal a) { this.acceptability = a; }
   public void setThreadID(int id) { this.threadID = id ; }
-  public void getContent(BSONObject content) { this.content = content; }
+  public void setContent(BSONObject content) { this.content = content; }
 
   @Override
 	public int hashCode() {
@@ -98,4 +90,7 @@ public class JAgoraNode {
 		return id.equals(obj);
 	}
 
+	public VoteInformation getVotes() { return votes; }
+
+  public void setVotes(VoteInformation votes) { this.votes = votes; }
 }

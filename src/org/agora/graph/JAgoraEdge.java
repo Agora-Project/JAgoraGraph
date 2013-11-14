@@ -13,6 +13,8 @@ public class JAgoraEdge {
 	protected String posterName;
 	protected int posterID;
 
+	protected VoteInformation votes;
+	
 	public JAgoraEdge() {}
 	
 	public JAgoraEdge(JAgoraNode origin, JAgoraNode target) {
@@ -50,5 +52,7 @@ public class JAgoraEdge {
 	public JAgoraEdgeID getID() { return id; }
 	public JAgoraNode getOrigin() { return origin; }
 	public JAgoraNode getTarget() { return target; }
+	public VoteInformation getVotes() { return votes; }
 
+	public void setVotes(VoteInformation votes) { this.votes = votes; }
 }
