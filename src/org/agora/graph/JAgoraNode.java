@@ -37,10 +37,12 @@ public class JAgoraNode {
 	}
 	
 	public JAgoraNode(JAgoraNodeID nodeID) {
+	  this();
 	  construct(nodeID);
 	}
 	
 	public JAgoraNode(String source, Integer ID) {
+	  this();
 	  construct(new JAgoraNodeID(source, ID));
 	}
 
@@ -93,4 +95,17 @@ public class JAgoraNode {
 	public VoteInformation getVotes() { return votes; }
 
   public void setVotes(VoteInformation votes) { this.votes = votes; }
+  
+  /**
+   * Returns whether this Node is a placeholder. Placeholder nodes are used for
+   * representing attacks in which only one of the attacker and defender is
+   * within the thread that was asked for. They do not contain any information
+   * except for the node ID and threadID, so that the client can request more
+   * information about it or its thread afterwards.
+   * @return
+   */
+  public boolean isPlaceholder() {
+    // Should be enough ;)
+    return content == null;
+  }
 }
