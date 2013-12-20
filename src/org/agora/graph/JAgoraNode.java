@@ -50,13 +50,8 @@ public class JAgoraNode {
 	 * Adds an edge to the node
 	 * @param att
 	 */
-	public void addIncomingEdge(JAgoraEdge arg) {
-	  incomingEdges.add(arg);
-	}
-	
-	public void addOutgoingEdge(JAgoraEdge arg) {
-    outgoingEdges.add(arg);
-  }
+	public void addIncomingEdge(JAgoraEdge arg) { incomingEdges.add(arg); }
+	public void addOutgoingEdge(JAgoraEdge arg) { outgoingEdges.add(arg); }
 	
 	public int getNumber() { return id.getLocalID(); }
 	public String getSource() { return id.getSource(); }
@@ -108,4 +103,6 @@ public class JAgoraNode {
     // Should be enough ;)
     return content == null;
   }
+  
+  public String toString() { return id.toString(); }
 }
