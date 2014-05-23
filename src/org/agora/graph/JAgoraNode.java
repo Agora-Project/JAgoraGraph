@@ -1,6 +1,7 @@
 package org.agora.graph;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -60,6 +61,8 @@ public class JAgoraNode {
 	public Iterator<JAgoraEdge> getIncomingEdges() { return incomingEdges.iterator(); }
 	public Iterator<JAgoraEdge> getOutgoingEdges() { return outgoingEdges.iterator(); }
 	
+        public ArrayList<JAgoraEdge> getIncomingEdgeList() {return new ArrayList<>(incomingEdges);}
+        public ArrayList<JAgoraEdge> getOutgoingEdgeList() {return new ArrayList<>(outgoingEdges);}
 	
 	public JAgoraNodeID getID() { return id; }
   public String getPosterName() { return posterName; }
